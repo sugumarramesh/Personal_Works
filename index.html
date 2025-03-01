@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asset Distribution Health Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fc;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+            font-size: 24px;
+        }
+        .dashboard-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .table-container {
+            width: 80%;
+            margin: 0 auto;
+            border-collapse: collapse;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .status {
+            padding: 5px 10px;
+            border-radius: 5px;
+            color: white;
+        }
+        .status.pitched {
+            background-color: #4CAF50;
+        }
+        .status.pending {
+            background-color: #FF9800;
+        }
+        .status.error {
+            background-color: #F44336;
+        }
+        .btn-refresh {
+            display: block;
+            width: 200px;
+            margin: 20px auto;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .btn-refresh:hover {
+            background-color: #45a049;
+        }
+        .error-log {
+            color: red;
+            text-align: center;
+            font-size: 18px;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    Asset Distribution Health Dashboard
+</header>
+
+<div class="dashboard-container">
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Asset ID</th>
+                    <th>Pitching Status</th>
+                    <th>Catcher Availability</th>
+                    <th>Additional Metadata</th>
+                    <th>Errors</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>12345</td>
+                    <td><span class="status pitched">Pitched</span></td>
+                    <td>Available</td>
+                    <td>Metadata1</td>
+                    <td>No Errors</td>
+                </tr>
+                <tr>
+                    <td>67890</td>
+                    <td><span class="status pending">Pending</span></td>
+                    <td>Unavailable</td>
+                    <td>Metadata2</td>
+                    <td>No Errors</td>
+                </tr>
+                <tr>
+                    <td>11223</td>
+                    <td><span class="status error">Error</span></td>
+                    <td>Unavailable</td>
+                    <td>Metadata3</td>
+                    <td>Network Error</td>
+                </tr>
+                <tr>
+                    <td>44556</td>
+                    <td><span class="status pitched">Pitched</span></td>
+                    <td>Available</td>
+                    <td>Metadata4</td>
+                    <td>No Errors</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<button class="btn-refresh" onclick="refreshDashboard()">Refresh Data</button>
+
+<div class="error-log" id="errorLog"></div>
+
+<script>
+    function refreshDashboard() {
+        // Simulate fetching data from APIs and updating the table
+        document.getElementById('errorLog').innerText = "Refreshing data... (This would be done through API calls)";
+
+        // Simulate new data being loaded (Replace with actual API call logic)
+        setTimeout(function() {
+            document.getElementById('errorLog').innerText = "Data refreshed successfully!";
+        }, 2000); // Simulating a 2-second delay
+    }
+</script>
+
+</body>
+</html>
