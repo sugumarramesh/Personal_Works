@@ -1,153 +1,188 @@
 <!DOCTYPE html>
-
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asset Distribution Health Dashboard</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Splunk Query Generator</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f7fc;
+            background-color: #f4f4f4;
             margin: 0;
             padding: 0;
-        }
-        header {
-            background-color: #4CAF50;
-            color: white;
-            padding: 15px 0;
-            text-align: center;
-            font-size: 24px;
-        }
-        .dashboard-container {
             display: flex;
-            justify-content: center;
-            margin-top: 20px;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            width: 100vw;
         }
-        .table-container {
-            width: 80%;
-            margin: 0 auto;
-            border-collapse: collapse;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-        table {
+        .header {
+            background-color: #fff;
             width: 100%;
-            border: 1px solid #ddd;
-        }
-        th, td {
-            padding: 12px;
-            text-align: center;
-            border: 1px solid #ddd;
-        }
-        th {
-            background-color: #4CAF50;
-            color: white;
-        }
-        .status {
-            padding: 5px 10px;
-            border-radius: 5px;
-            color: white;
-        }
-        .status.pitched {
-            background-color: #4CAF50;
-        }
-        .status.pending {
-            background-color: #FF9800;
-        }
-        .status.error {
-            background-color: #F44336;
-        }
-        .btn-refresh {
-            display: block;
-            width: 200px;
-            margin: 20px auto;
             padding: 10px;
-            background-color: #4CAF50;
-            color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-bottom: 2px solid #007bff;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .header .icon {
+            background-color: #28a745;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 4px;
+            margin-right: 10px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border: 2px solid #007bff;
+            width: 80%;
+            max-width: 800px;
+            margin-top: 80px; /* Adjust this value if needed */
+        }
+        h1 {
+            color: #333;
+            margin: 0;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+        }
+        select, input[type="text"], input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
             border: none;
             cursor: pointer;
-            border-radius: 5px;
-            font-size: 16px;
         }
-        .btn-refresh:hover {
-            background-color: #45a049;
+        input[type="submit"]:hover {
+            background-color: #0056b3;
         }
-        .error-log {
-            color: red;
+        p {
             text-align: center;
-            font-size: 18px;
-            margin-top: 30px;
+            color: #333;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .query-box {
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 20px;
+            text-align: center;
         }
     </style>
 </head>
 <body>
-
-<header>
-    Asset Distribution Health Dashboard
-</header>
-
-<div class="dashboard-container">
-    <div class="table-container">
-        <table>
-            <thead>
-                <tr>
-                    <th>Asset ID</th>
-                    <th>Pitching Status</th>
-                    <th>Catcher Availability</th>
-                    <th>Additional Metadata</th>
-                    <th>Errors</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>12345</td>
-                    <td><span class="status pitched">Pitched</span></td>
-                    <td>Available</td>
-                    <td>Metadata1</td>
-                    <td>No Errors</td>
-                </tr>
-                <tr>
-                    <td>67890</td>
-                    <td><span class="status pending">Pending</span></td>
-                    <td>Unavailable</td>
-                    <td>Metadata2</td>
-                    <td>No Errors</td>
-                </tr>
-                <tr>
-                    <td>11223</td>
-                    <td><span class="status error">Error</span></td>
-                    <td>Unavailable</td>
-                    <td>Metadata3</td>
-                    <td>Network Error</td>
-                </tr>
-                <tr>
-                    <td>44556</td>
-                    <td><span class="status pitched">Pitched</span></td>
-                    <td>Available</td>
-                    <td>Metadata4</td>
-                    <td>No Errors</td>
-                </tr>
-            </tbody>
-        </table>
+    <div class="header">
+        <div class="icon">&gt;</div>
+        <h1>Splunk Query Generator</h1>
     </div>
-</div>
+    <div class="container">
+        <form id="queryForm">
+            <label for="index">Index:</label>
+            <select name="index" id="index">
+                <option value="" disabled selected>Select Index</option>
+                <option value="request">request</option>
+                <option value="service">service</option>
+            </select>
 
-<button class="btn-refresh" onclick="refreshDashboard()">Refresh Data</button>
+            <label for="sourcetype">Source Type:</label>
+            <select name="sourcetype" id="sourcetype">
+                <option value="" disabled selected>Select Source Type</option>
+                <option value="epgingestdataservice-web">epgingestdataservice-web</option>
+                <option value="publishservice-web">publishservice-web</option>
+                <option value="ingestservice-web">ingestservice-web</option>
+            </select>
+            
+            <label for="accountname">Account Name:</label>
+            <select name="accountname" id="accountname">
+                <option value="" disabled selected>Select Account Name</option>
+                <option value="OSN Production - Main">OSN Production - Main</option>
+                <option value="Viaplay Prod - Scandi">Viaplay Prod - Scandi</option>
+                <option value="OTE Production - Main">OTE Production - Main</option>
+            </select>			
 
-<div class="error-log" id="errorLog"></div>
+            <label for="statuscode">Status Code Condition:</label>
+            <input type="text" name="statuscode" id="statuscode" placeholder="e.g., status >399, status=500, status<299">
 
-<script>
-    function refreshDashboard() {
-        // Simulate fetching data from APIs and updating the table
-        document.getElementById('errorLog').innerText = "Refreshing data... (This would be done through API calls)";
+            <label for="timeframe">Timeframe:</label>
+            <select name="timeframe" id="timeframe">
+                <option value="" disabled selected>Select Timeframe</option>
+                <option value="15m">Last 15 minutes</option>
+                <option value="30m">Last 30 minutes</option>
+                <option value="1h">Last 1 hour</option>
+                <option value="24h">Last 24 hours</option>
+            </select>
 
-        // Simulate new data being loaded (Replace with actual API call logic)
-        setTimeout(function() {
-            document.getElementById('errorLog').innerText = "Data refreshed successfully!";
-        }, 2000); // Simulating a 2-second delay
-    }
-</script>
+            <label for="mode">Search Mode:</label>
+            <select name="mode" id="mode">
+                <option value="verbose" selected>Verbose</option>
+                <option value="fast">Fast</option>
+                <option value="smart">Smart</option>
+            </select>
 
+            <input type="submit" value="Generate Link">
+        </form>
+
+        <div class="query-box" id="queryBox"></div>
+    </div>
+
+    <script>
+        document.getElementById('queryForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const index = document.getElementById('index').value;
+            const sourcetype = document.getElementById('sourcetype').value;
+            const accountname = document.getElementById('accountname').value;
+            const statuscode = document.getElementById('statuscode').value;
+            const timeframe = document.getElementById('timeframe').value;
+            const mode = document.getElementById('mode').value;
+
+            let query = "search";
+            if (index) {
+                query += ` index="${index}"`;
+            }
+            if (sourcetype) {
+                query += ` sourcetype="${sourcetype}"`;
+            }
+            if (accountname) {
+                query += ` acct_name="${accountname}"`;
+            }
+            if (statuscode) {
+                query += ` ${statuscode}`;
+            }
+
+            let url = `https://splunk-prod.corp.theplatform.com/en-US/app/search/search?q=${encodeURIComponent(query)}`;
+            url += `&display.page.search.mode=${mode}&dispatch.sample_ratio=1`;
+            if (timeframe) {
+                url += `&earliest=-${timeframe}&latest=now`;
+            }
+
+            // document.getElementById('queryBox').innerHTML = `<p>Generated Link: <a href="${url}" target="_blank">${url}</a></p>`;
+            document.getElementById('queryBox').innerHTML = `<p>Generated Query: <a href="${url}" target="_blank">${query}</a></p>`;
+        });
+    </script>
 </body>
 </html>
